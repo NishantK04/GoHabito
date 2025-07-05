@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="purple_500">#E90B0B</color>
+    <color name="yellow">#DBDB31</color>
+    <color name="yellowDark">#FFFF00</color>
+    <color name="green">#008000</color>
+
+    <color name="primary">#6200EE</color>
+    <color name="primaryVariant">#3700B3</color>
+    <color name="secondary">#03DAC5</color>
+    <color name="gray100">#F7F7F7</color>
+    <color name="cardBackground">#FFFFFF</color>
+
+    <color name="dialogBackground">#FFFFFF</color>
+    <color name="textPrimary">#000000</color>
+    <color name="editTextBackground">#F0F0F0</color>
+
+    <color name="blue">#007AFF</color>
+    <color name="purple200">#CE93D8</color>
+
+
+
+
+
+</resources>

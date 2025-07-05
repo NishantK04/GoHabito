@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/mission_card_bg"
+    android:padding="12dp"
+    android:gravity="center_horizontal">
+
+    <!-- Heading -->
+    <TextView
+        android:id="@+id/missionHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today's Mission"
+        android:textStyle="bold"
+        android:textColor="#222222"
+        android:textSize="16sp"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Progress Text -->
+    <TextView
+        android:id="@+id/widgetProgressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Completed: 0/0"
+        android:textColor="#555555"
+        android:textSize="14sp"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Mission List with Fixed Height -->
+    <ListView
+        android:id="@+id/missionListView"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="6dp"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"
+        android:paddingBottom="4dp" />
+
+</LinearLayout>

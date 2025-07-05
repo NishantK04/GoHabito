@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HabitTrackerApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Light theme customization -->
+        <item name="colorPrimary">#6200EE</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <!-- Removed: <item name="editTextBackground">#F0F0F0</item> -->
+        <item name="android:colorBackground">#FFFFFF</item>
+
+        <!-- Theme-aware surface and border -->
+        <item name="colorSurface">?android:colorBackground</item>
+
+        <item name="colorSurfaceVariant">#F5F5F5</item>
+        <item name="colorOutline">#DDDDDD</item>
+    </style>
+
+    <style name="Theme.HabitTrackerApp" parent="Base.Theme.HabitTrackerApp" />
+</resources>

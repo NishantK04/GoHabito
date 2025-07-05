@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:material="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:backgroundTint="?attr/colorSurface"
+    material:strokeColor="?attr/colorOutline"
+    material:strokeWidth="1dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="20dp"
+android:gravity="center_horizontal">
+
+<!-- Name Input -->
+<EditText
+    android:id="@+id/inputUserName"
+    android:hint="Enter your name"
+    android:inputType="textCapWords"
+    android:textSize="16sp"
+    android:textColorHint="?android:textColorHint"
+    android:maxLines="1"
+    android:textColor="?android:textColorPrimary"
+    android:background="@drawable/edittext_background"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<!-- Habit Title -->
+<EditText
+    android:id="@+id/inputHabitTitle"
+    android:hint="Habit title (e.g., Read book)"
+    android:inputType="textCapWords"
+    android:textSize="16sp"
+    android:textColorHint="?android:textColorHint"
+    android:maxLines="1"
+    android:textColor="?android:textColorPrimary"
+    android:background="@drawable/edittext_background"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<!-- Total Days Input -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="16dp">
+
+    <ImageButton
+        android:id="@+id/decreaseButton"
+        android:src="@drawable/left"
+        android:contentDescription="Decrease"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="?android:textColorPrimary" />
+
+    <EditText
+        android:id="@+id/inputHabitGoal"
+        android:hint="Goal (in days)"
+        android:inputType="number"
+        android:textSize="16sp"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorHint"
+        android:textAlignment="center"
+        android:maxLines="1"
+        android:background="@drawable/edittext_background"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <ImageButton
+        android:id="@+id/increaseButton"
+        android:src="@drawable/right"
+        android:contentDescription="Increase"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="?android:textColorPrimary" />
+</LinearLayout>
+
+<!-- Today's Mission -->
+<EditText
+    android:id="@+id/inputTodayMission"
+    android:hint="What’s today’s goal? (e.g., Walk 5,000 steps)"
+    android:inputType="textCapSentences"
+    android:textSize="14sp"
+    android:textColor="?android:textColorPrimary"
+    android:background="@drawable/edittext_background"
+    android:textColorHint="?android:textColorHint"
+
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+</LinearLayout>
+    </com.google.android.material.card.MaterialCardView>

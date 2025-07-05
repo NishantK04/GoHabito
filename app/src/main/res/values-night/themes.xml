@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HabitTrackerApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">#BB86FC</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <!-- Removed: <item name="editTextBackground">#2C2C2C</item> -->
+        <item name="cardBackgroundColor">#1E1E1E</item>
+
+        <item name="colorSurface">#1E1E1E</item> <!-- Card background -->
+        <item name="colorOutline">#444444</item>
+        <item name="colorSurfaceVariant">#F0F0F0</item> <!-- light -->
+        <item name="colorSurfaceVariant">#2C2C2C</item>
+        <item name="colorOutline">#444444</item>
+
+    </style>
+</resources>

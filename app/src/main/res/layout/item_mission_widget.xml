@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="10dp">
+
+    <!-- Left side: Static mission icon -->
+    <ImageView
+        android:id="@+id/missionIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/habitlogo" />
+
+    <!-- Middle: Mission Name -->
+    <TextView
+        android:id="@+id/itemText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Habit name"
+        android:textColor="#222222"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- Right side: Completed icon (✅ shown only if mission is complete) -->
+    <ImageView
+        android:id="@+id/completedIcon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/check"
+        android:visibility="gone" />
+</LinearLayout>
