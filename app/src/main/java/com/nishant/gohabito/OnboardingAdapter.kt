@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.view.LayoutInflater
 import android.view.View

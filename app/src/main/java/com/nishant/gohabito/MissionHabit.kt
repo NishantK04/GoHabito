@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 data class MissionHabit(
     val name: String = "",

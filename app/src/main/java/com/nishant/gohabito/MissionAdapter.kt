@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.graphics.Paint
 import android.util.Log
@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.nishant.Habitide.databinding.ItemHabitCheckboxBinding
+import com.nishant.gohabito.databinding.ItemHabitCheckboxBinding
 
 class MissionAdapter(
     private val habits: MutableList<MissionHabit>,

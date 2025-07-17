@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.graphics.Canvas
 import android.graphics.ColorFilter

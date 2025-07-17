@@ -1,9 +1,9 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.nishant.Habitide.databinding.ItemHabitBinding
+import com.nishant.gohabito.databinding.ItemHabitBinding
 
 class HabitAdapter(
     private val habits: MutableList<Habit>,

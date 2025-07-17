@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay

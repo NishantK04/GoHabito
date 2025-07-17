@@ -1,4 +1,4 @@
-package com.nishant.Habitide
+package com.nishant.gohabito
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

@@ -16,11 +16,11 @@ val localProperties = Properties().apply {
 val defaultWebClientId: String = localProperties.getProperty("DEFAULT_WEB_CLIENT_ID") ?: ""
 
 android {
-    namespace = "com.nishant.Habitide"
+    namespace = "com.nishant.gohabito"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.nishant.Habitide"
+        applicationId = "com.nishant.gohabito"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
