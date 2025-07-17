@@ -1,17 +1,25 @@
 package com.nishant.Habitide
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowInsetsController
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -47,14 +55,39 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     private val db = FirebaseDatabase.getInstance().reference
     private val firestore = FirebaseFirestore.getInstance()
     private lateinit var userId: String
+    private lateinit var feedbackbtn: ImageButton
 
     private var isUpdatingMasterCheckBox = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        window.statusBarColor = Color.BLACK
+
+        // Make layout go under the status bar
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // Set your light background color
+        window.statusBarColor = Color.parseColor("#F0F4FF")
+
+        // Make status bar icons dark (for light background)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    )
+        }
+        // Your color
+
         setContentView(R.layout.activity_main)
 
         FirebaseAuth.getInstance().currentUser?.let { user -> userId = user.uid } ?: run {
@@ -115,7 +148,14 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
 
         loadHabits()
         loadMissions()
+        feedbackbtn = findViewById(R.id.feedbackbtn)
+
+        feedbackbtn.setOnClickListener {
+            showFeedbackDialog()
+        }
+
     }
+
 
     private fun showLogoutConfirmation() {
         val dialog = MaterialAlertDialogBuilder(this)
@@ -194,7 +234,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     }
 
     private fun getTodayDate(): String =
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date())
 
     private fun checkAllMissionsAndIncrement() {
         for (mission in missionHabits) {
@@ -351,17 +391,46 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         val completed = missionHabits.count { it.checked }
         val percent = if (total > 0) (completed * 100 / total) else 0
 
-        habitProgress.setProgress(percent, true)
+        // ✨ Animate the progress bar smoothly
+        val animator = ValueAnimator.ofInt(habitProgress.progress, percent)
+        animator.duration = 500  // snappier
+        animator.interpolator = android.view.animation.AccelerateDecelerateInterpolator()
+        animator.addUpdateListener {
+            val animatedValue = it.animatedValue as Int
+            habitProgress.progress = animatedValue
+        }
+        animator.start()
+
+        // ✅ Text in center
         habitDaysLeft.text = "$completed/$total"
 
+        // 🎨 Change color dynamically based on progress
+        val color = when {
+            percent >= 80 -> Color.parseColor("#4CAF50") // Green
+            percent >= 50 -> Color.parseColor("#FFC107") // Amber
+            else -> Color.parseColor("#F44336")          // Red
+        }
+        habitProgress.setIndicatorColor(color)
+
+        // 🟩 Optional PULSE animation on 100% completion
+        if (percent == 100) {
+            habitProgress.animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).withEndAction {
+                habitProgress.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+            }.start()
+        }
+
+        // 🔘 Checkbox safe state update
         isUpdatingMasterCheckBox = true
-        masterCheckBox.isChecked = missionHabits.isNotEmpty() && completed == total
+        masterCheckBox.isChecked = total > 0 && completed == total
         isUpdatingMasterCheckBox = false
 
-        if (missionHabits.isNotEmpty() && completed == total) {
+        // 🥳 Optional feedback
+        if (total > 0 && completed == total) {
             Toast.makeText(this, "All missions completed! 🎯", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     private fun showPlaceholder(show: Boolean) {
         emptyText.visibility = if (show) View.VISIBLE else View.GONE
@@ -420,5 +489,103 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         super.onResume()
         updateMissionWidget() // 🔁 Refresh the widget every time user returns to app
     }
+    private fun showFeedbackDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null)
+        val spinner = dialogView.findViewById<Spinner>(R.id.spinnerFeedbackType)
+        val editText = dialogView.findViewById<EditText>(R.id.editTextFeedbackMsg)
+
+        val types = arrayOf("Feedback", "Bug Report")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setPositiveButton("Submit", null) // Handle later to prevent auto-dismiss
+            .setNegativeButton("Cancel") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .create()
+
+        dialog.setOnShowListener {
+            val submitButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            submitButton.setOnClickListener {
+                val type = spinner.selectedItem.toString()
+                val message = editText.text.toString().trim()
+
+                if (message.isNotEmpty()) {
+                    val data = hashMapOf(
+                        "type" to type,
+                        "message" to message,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    firestore.collection("Feedbacks")
+                        .add(data)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Thanks for your $type!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            if (type == "Feedback") {
+                                showRatingStarsDialog()
+                            }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Failed to submit.", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "Please enter a message.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        dialog.show()
+    }
+    private fun showRatingStarsDialog() {
+        val ratingView = LayoutInflater.from(this).inflate(R.layout.dialog_rating_stars, null)
+        val ratingBar = ratingView.findViewById<RatingBar>(R.id.ratingBar)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(ratingView)
+            .create()
+
+        ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            playBounceAnimation(ratingBar)
+
+            dialog.dismiss()
+            if (rating >= 2.5) {
+                openPlayStoreForRating()
+            } else {
+                Toast.makeText(this, "Thanks for your feedback!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        dialog.show()
+    }
+
+    private fun openPlayStoreForRating() {
+        val packageName = packageName
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: android.content.ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        }
+    }
+    private fun playBounceAnimation(view: View) {
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f, 1f)
+
+        scaleX.duration = 300
+        scaleY.duration = 300
+
+        scaleX.interpolator = android.view.animation.OvershootInterpolator()
+        scaleY.interpolator = android.view.animation.OvershootInterpolator()
+
+        scaleX.start()
+        scaleY.start()
+    }
+
+
+
 
 }

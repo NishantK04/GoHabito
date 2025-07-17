@@ -1,15 +1,24 @@
 package com.nishant.Habitide
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsetsController
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,11 +44,46 @@ class OnboardingActivity : AppCompatActivity() {
         viewPager.currentItem = nextItem
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        window.statusBarColor = android.graphics.Color.BLACK
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_onboarding)
+
+        val rootLayout = findViewById<View>(R.id.rootLayout)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop,
+                view.paddingRight,
+                systemBars.bottom
+            )
+            insets
+        }
+
+
+        // Set your light background color
+        window.statusBarColor = Color.parseColor("#F0F4FF")
+
+        // Make status bar icons dark (for light background)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    )
+        }
+        // Your color
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -70,10 +114,14 @@ class OnboardingActivity : AppCompatActivity() {
         })
 
         getStartedBtn.setOnClickListener {
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
+            if (!isInternetAvailable()) {
+                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             launchGoogleSignIn()
         }
+
         val dotsIndicator = findViewById<WormDotsIndicator>(R.id.dotsIndicator)
         dotsIndicator.setViewPager2(viewPager)
 
@@ -120,5 +168,12 @@ class OnboardingActivity : AppCompatActivity() {
         val signInIntent = googleSignInClient.signInIntent
         signInLauncher.launch(signInIntent)
     }
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
 
 }

@@ -1,19 +1,32 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
+
+    <!-- ✅ Splash Theme -->
+    <style name="Theme.HabitTrackerApp.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <!-- ✅ Custom White Dialog Theme -->
+    <style name="CustomAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="background">@android:color/white</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
+    <!-- ✅ Base App Theme -->
     <style name="Base.Theme.HabitTrackerApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Light theme customization -->
+        <item name="materialAlertDialogTheme">@style/CustomAlertDialog</item>
+
         <item name="colorPrimary">#6200EE</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="android:textColorPrimary">#000000</item>
-        <!-- Removed: <item name="editTextBackground">#F0F0F0</item> -->
         <item name="android:colorBackground">#FFFFFF</item>
-
-        <!-- Theme-aware surface and border -->
         <item name="colorSurface">?android:colorBackground</item>
-
         <item name="colorSurfaceVariant">#F5F5F5</item>
         <item name="colorOutline">#DDDDDD</item>
     </style>
 
+    <!-- ✅ Main App Theme -->
     <style name="Theme.HabitTrackerApp" parent="Base.Theme.HabitTrackerApp" />
+
 </resources>

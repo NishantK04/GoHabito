@@ -70,6 +70,12 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
     implementation("com.applandeo:material-calendar-view:1.9.2")
 
     // ✅ Firebase

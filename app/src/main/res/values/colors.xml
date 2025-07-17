@@ -7,6 +7,12 @@
     <color name="yellowDark">#FFFF00</color>
     <color name="green">#008000</color>
 
+    <color name="gradient_start">#FF6F61</color> <!-- warm red -->
+    <color name="gradient_end">#FF4081</color> <!-- modern pink -->
+
+    <color name="progress_primary">#4CAF50</color> <!-- Green or any stylish color -->
+
+
     <color name="primary">#6200EE</color>
     <color name="primaryVariant">#3700B3</color>
     <color name="secondary">#03DAC5</color>

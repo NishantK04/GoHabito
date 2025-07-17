@@ -54,13 +54,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/userImage">
 
+            <ImageButton
+                android:id="@+id/feedbackbtn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="10dp"
+                android:background="@null"
+                android:src="@drawable/feedback"
+                android:tint="#000000" />
+
             <!-- Plus icon -->
             <ImageButton
                 android:id="@+id/addHabitBtn"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="7dp"
+                android:layout_marginEnd="10dp"
                 android:background="@null"
                 android:src="@android:drawable/ic_input_add"
                 android:tint="#000000" />
@@ -160,8 +171,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp">
 
@@ -171,11 +182,16 @@
                                 android:layout_height="match_parent"
                                 android:max="100"
                                 android:progress="0"
-                                app:hideAnimationBehavior="inward"
-                                app:indicatorColor="#4CAF50"
-                                app:indicatorSize="88dp"
+                                android:indeterminate="false"
+                                app:indicatorColor="@color/progress_primary"
+                                app:indicatorSize="100dp"
+                                android:layout_gravity="center"
+                                app:trackThickness="8dp"
+                                app:trackColor="#E0E0E0"
                                 app:showAnimationBehavior="outward"
-                                app:trackColor="@color/black" />
+                                app:hideAnimationBehavior="inward"
+                                android:elevation="8dp"/>
+
 
                             <TextView
                                 android:id="@+id/habitDaysLeft"
@@ -183,9 +199,14 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="0/0"
-                                android:textColor="@android:color/black"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:textColor="#1C1C1E"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:shadowColor="#33000000"
+                                android:shadowDx="1"
+                                android:shadowDy="2"
+                                android:shadowRadius="3"/>
+
                         </FrameLayout>
 
                         <ImageView
