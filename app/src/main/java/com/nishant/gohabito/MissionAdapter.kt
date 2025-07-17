@@ -36,7 +36,7 @@ class MissionAdapter(
         holder.checkBox.setOnCheckedChangeListener(null)
 
         // Set text and checkbox state
-        holder.checkBox.text = "${habit.name} - ${habit.habitTitle}"
+        holder.checkBox.text = "${habit.name} (${habit.habitTitle})"
         holder.checkBox.isChecked = habit.checked
         holder.checkBox.isEnabled = !habit.checked
         setStrikeThrough(holder.checkBox, habit.checked)

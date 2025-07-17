@@ -8,8 +8,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.nishant.Habitide" />
-                  <option name="mobileSdkAppId" value="1:127393349383:android:114db7e34aaafa149f8fa2" />
+                  <option name="appId" value="com.nishant.gohabito" />
+                  <option name="mobileSdkAppId" value="1:127393349383:android:471fe0c5e3c018f29f8fa2" />
                   <option name="projectId" value="habittrackerapp-6715b" />
                   <option name="projectNumber" value="127393349383" />
                 </ConnectionSetting>

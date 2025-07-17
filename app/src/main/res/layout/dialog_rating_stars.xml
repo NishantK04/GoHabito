@@ -25,8 +25,22 @@
         android:stepSize="1.0"
         android:isIndicator="false"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:progressTint="@color/yellow"
         android:scaleX="1"
         android:scaleY="1" />
+
+    <!-- "Later" Button to skip the rating -->
+    <TextView
+        android:id="@+id/laterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Later"
+        android:textSize="14sp"
+        android:textColor="#3F51B5"
+        android:paddingTop="16dp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
 </LinearLayout>

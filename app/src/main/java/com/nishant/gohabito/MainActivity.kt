@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     private var isUpdatingMasterCheckBox = false
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
 
         setContentView(R.layout.activity_main)
 
+
         FirebaseAuth.getInstance().currentUser?.let { user -> userId = user.uid } ?: run {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
             finish()
@@ -117,7 +119,11 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         habitDaysLeft = findViewById(R.id.habitDaysLeft)
         masterCheckBox = findViewById(R.id.masterCheckBox)
 
-        userName.text = "Welcome, ${FirebaseAuth.getInstance().currentUser?.displayName ?: "User"}"
+        val displayName = FirebaseAuth.getInstance().currentUser?.displayName ?: "User"
+        val firstName = displayName.split(" ")[0] // Get only the first name
+        userName.text = "Welcome, $firstName"
+
+
         FirebaseAuth.getInstance().currentUser?.photoUrl?.let { Picasso.get().load(it).into(userImage) }
 
         habitRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -153,7 +159,18 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
             showFeedbackDialog()
         }
 
+        saveInstallDateIfFirstTime()
+
+
     }
+    private fun saveInstallDateIfFirstTime() {
+        val prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        if (!prefs.contains("installDate")) {
+            val installTime = System.currentTimeMillis()
+            prefs.edit().putLong("installDate", installTime).apply()
+        }
+    }
+
 
 
     private fun showLogoutConfirmation() {
@@ -233,7 +250,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     }
 
     private fun getTodayDate(): String =
-        SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date())
+        SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(Date())
 
     private fun checkAllMissionsAndIncrement() {
         for (mission in missionHabits) {
@@ -487,6 +504,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     override fun onResume() {
         super.onResume()
         updateMissionWidget() // 🔁 Refresh the widget every time user returns to app
+        maybeShowRatingDialog()
     }
     private fun showFeedbackDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null)
@@ -542,6 +560,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     private fun showRatingStarsDialog() {
         val ratingView = LayoutInflater.from(this).inflate(R.layout.dialog_rating_stars, null)
         val ratingBar = ratingView.findViewById<RatingBar>(R.id.ratingBar)
+        val laterText = ratingView.findViewById<TextView>(R.id.laterText)
 
         val dialog = AlertDialog.Builder(this)
             .setView(ratingView)
@@ -550,12 +569,20 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             playBounceAnimation(ratingBar)
 
+            getSharedPreferences("AppPrefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("hasRatedApp", true)
+                .apply()
+
             dialog.dismiss()
             if (rating >= 2.5) {
                 openPlayStoreForRating()
             } else {
                 Toast.makeText(this, "Thanks for your feedback!", Toast.LENGTH_SHORT).show()
             }
+        }
+        laterText.setOnClickListener {
+            dialog.dismiss()
         }
 
 
@@ -583,6 +610,29 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         scaleX.start()
         scaleY.start()
     }
+
+    private fun maybeShowRatingDialog() {
+        val prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+
+        // Check if user already rated
+        val hasRated = prefs.getBoolean("hasRatedApp", false)
+        if (hasRated) return
+
+        // Track and update launch count
+        val launchCount = prefs.getInt("launchCount", 0) + 1
+        prefs.edit().putInt("launchCount", launchCount).apply()
+
+        // Get install date and calculate days passed
+        val installDate = prefs.getLong("installDate", 0L)
+        val daysSinceInstall = (System.currentTimeMillis() - installDate) / (1000 * 60 * 60 * 24)
+
+        // Show rating dialog only after 5 launches and 3 days
+        if (launchCount >= 5 || daysSinceInstall >= 3) {
+            showRatingStarsDialog()
+        }
+    }
+
+
 
 
 

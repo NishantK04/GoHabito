@@ -17,10 +17,14 @@ class HabitAdapter(
 
         fun bind(habit: Habit) {
             binding.habitTitle.text = habit.title
-            binding.habitData.text = "${habit.daysCompleted} / ${habit.goalDays} days"
+
+            // ✅ Calculate dynamic daysCompleted
+            val actualDaysCompleted = calculateDaysSince(habit.startDate)
+
+            binding.habitData.text = "$actualDaysCompleted / ${habit.goalDays} days"
 
             val progressPercent = if (habit.goalDays > 0)
-                (habit.daysCompleted * 100 / habit.goalDays)
+                (actualDaysCompleted * 100 / habit.goalDays)
             else 0
 
             val progressColor = when {
@@ -32,17 +36,16 @@ class HabitAdapter(
             binding.habitProgress.setIndicatorColor(progressColor)
             binding.habitProgress.setProgress(progressPercent, true)
 
-            val daysLeft = (habit.goalDays - habit.daysCompleted).coerceAtLeast(0)
+            val daysLeft = (habit.goalDays - actualDaysCompleted).coerceAtLeast(0)
             binding.habitDaysLeft.text = daysLeft.toString()
 
-            // ✅ Show start date
             binding.habitStartDate.text = "Started on ${habit.startDate ?: "N/A"}"
 
-            // ✅ Handle click to open calendar
             binding.root.setOnClickListener {
                 clickListener.onHabitClicked(habit)
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
@@ -85,4 +88,18 @@ class HabitAdapter(
         notifyItemRemoved(position)
         deleteListener.onHabitDeleted(removedHabit.title)
     }
+
+    private fun calculateDaysSince(startDate: String?): Int {
+        if (startDate.isNullOrEmpty()) return 0
+        return try {
+            val formatter = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+            val start = formatter.parse(startDate)
+            val now = java.util.Calendar.getInstance().time
+            val diffMillis = now.time - start.time
+            (diffMillis / (1000 * 60 * 60 * 24)).toInt() + 1 // +1 to include the start day
+        } catch (e: Exception) {
+            0
+        }
+    }
+
 }

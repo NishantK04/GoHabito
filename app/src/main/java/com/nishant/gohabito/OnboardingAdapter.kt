@@ -5,7 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class OnboardingAdapter(private val items: List<OnboardingItem>) :
     RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder>() {
@@ -14,13 +15,16 @@ class OnboardingAdapter(private val items: List<OnboardingItem>) :
         private val img = view.findViewById<ImageView>(R.id.imageView)
 
         fun bind(item: OnboardingItem) {
-            img.setImageResource(item.imageResId)
-
+            Glide.with(img.context)
+                .load(item.imageResId)
+                .transition(DrawableTransitionOptions.withCrossFade()) // smooth fade-in
+                .into(img)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_onboarding, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_onboarding, parent, false)
         return OnboardingViewHolder(view)
     }
 
