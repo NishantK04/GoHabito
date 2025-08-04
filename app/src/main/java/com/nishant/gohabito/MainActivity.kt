@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         FirebaseAuth.getInstance().currentUser?.photoUrl?.let { Picasso.get().load(it).into(userImage) }
 
         habitRecyclerView.layoutManager = LinearLayoutManager(this)
-        habitAdapter = HabitAdapter(habits, this, this)   // ✅ Passing click listener
+        habitAdapter = HabitAdapter(habits, this, this)
         habitRecyclerView.adapter = habitAdapter
         showPlaceholder(habits.isEmpty())
 
@@ -197,15 +197,9 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
                         FirebaseFirestore.getInstance().collection("users")
                             .document(userId)
                             .update("fcmToken", token)
-                            .addOnSuccessListener {
-                                Log.d("FCM", "Token saved to Firestore")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("FCM", "Failed to save token", e)
-                            }
+                            .addOnSuccessListener {}
+                            .addOnFailureListener {}
                     }
-                } else {
-                    Log.e("FCM", "Fetching FCM token failed", task.exception)
                 }
             }
 
@@ -252,7 +246,6 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
 
     private fun loadHabits() {
         if(!isInternetAvailable()){
-            Log.d("Note", "No internet connection")
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
             return
         }
@@ -502,7 +495,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
                             .document(docId).set(newMission, SetOptions.merge())
 
                         updateMissionProgress()
-                        saveMissionsToPrefs()  // ✅ <--- This is what was missing!
+                        saveMissionsToPrefs()  //  <--- This is what was missing!
                     }
 
                 } else {
@@ -531,7 +524,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         }
         animator.start()
 
-        // ✅ Text in center
+        //  Text in center
         habitDaysLeft.text = "$completed/$total"
 
         // 🎨 Change color dynamically based on progress
@@ -542,19 +535,19 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         }
         habitProgress.setIndicatorColor(color)
 
-        // 🟩 Optional PULSE animation on 100% completion
+        //  Optional PULSE animation on 100% completion
         if (percent == 100) {
             habitProgress.animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).withEndAction {
                 habitProgress.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
             }.start()
         }
 
-        // 🔘 Checkbox safe state update
+        //  Checkbox safe state update
         isUpdatingMasterCheckBox = true
         masterCheckBox.isChecked = total > 0 && completed == total
         isUpdatingMasterCheckBox = false
 
-        // 🥳 Optional feedback
+        //  Optional feedback
         if (total > 0 && completed == total) {
             Toast.makeText(this, "All missions completed! 🎯", Toast.LENGTH_SHORT).show()
         }
@@ -571,7 +564,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         if (removed) {
             missionAdapter.notifyDataSetChanged()
             updateMissionProgress()
-            saveMissionsToPrefs() // ✅ Add this line
+            saveMissionsToPrefs() //  Add this line
 
             firestore.collection("users").document(userId).collection("missions")
                 .whereEqualTo("habitTitle", habitTitle).get().addOnSuccessListener { result ->
@@ -628,7 +621,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     }
 
 
-    // ✅ Calendar click - Open Bottom Sheet
+    //  Calendar click - Open Bottom Sheet
     override fun onHabitClicked(habit: Habit) {
         val bottomSheet = HabitCalendarBottomSheet.newInstance(habit)
         bottomSheet.show(supportFragmentManager, "HabitCalendarBottomSheet")
@@ -792,9 +785,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
                 }
                 null
             }.addOnSuccessListener {
-                Log.d("MainActivity", "FCM Token saved successfully for user: $userId")
-            }.addOnFailureListener { e ->
-                Log.e("MainActivity", "Error saving FCM token", e)
+            }.addOnFailureListener {
             }
         }
     }

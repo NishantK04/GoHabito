@@ -62,11 +62,9 @@ class MissionAdapter(
                     .document(docId)
                     .set(updateMap, SetOptions.merge())
                     .addOnSuccessListener {
-                        Log.d("MissionAdapter", "✅ Firestore updated: $docId")
                         onCheckChanged(habit, true)
                     }
                     .addOnFailureListener { e ->
-                        Log.e("MissionAdapter", "❌ Firestore update failed", e)
                         habit.checked = false
                         holder.checkBox.isChecked = false
                         holder.checkBox.isEnabled = true
