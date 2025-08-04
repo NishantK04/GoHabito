@@ -17,6 +17,7 @@
     <style name="Base.Theme.HabitTrackerApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="materialAlertDialogTheme">@style/CustomAlertDialog</item>
 
+        <!-- Colors -->
         <item name="colorPrimary">#6200EE</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="android:textColorPrimary">#000000</item>
@@ -28,5 +29,15 @@
 
     <!-- ✅ Main App Theme -->
     <style name="Theme.HabitTrackerApp" parent="Base.Theme.HabitTrackerApp" />
+
+    <style name="RoundedAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/RoundedDialogShape</item>
+    </style>
+
+
+    <!-- ✅ Rounded Dialog Shape -->
+    <style name="RoundedDialogShape" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">20dp</item> <!-- Proper Material3 parent used -->
+    </style>
 
 </resources>

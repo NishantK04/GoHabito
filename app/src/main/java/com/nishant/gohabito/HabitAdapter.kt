@@ -1,6 +1,7 @@
 package com.nishant.gohabito
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nishant.gohabito.databinding.ItemHabitBinding
@@ -18,8 +19,8 @@ class HabitAdapter(
         fun bind(habit: Habit) {
             binding.habitTitle.text = habit.title
 
-            // ✅ Calculate dynamic daysCompleted
-            val actualDaysCompleted = calculateDaysSince(habit.startDate)
+            val actualDaysRaw = calculateDaysSince(habit.startDate)
+            val actualDaysCompleted = actualDaysRaw.coerceAtMost(habit.goalDays) // ✅ clamp
 
             binding.habitData.text = "$actualDaysCompleted / ${habit.goalDays} days"
 
@@ -38,13 +39,20 @@ class HabitAdapter(
 
             val daysLeft = (habit.goalDays - actualDaysCompleted).coerceAtLeast(0)
             binding.habitDaysLeft.text = daysLeft.toString()
-
             binding.habitStartDate.text = "Started on ${habit.startDate ?: "N/A"}"
+
+            if (actualDaysCompleted >= habit.goalDays) {
+                binding.habitCompletedIcon.visibility = View.VISIBLE
+            } else {
+                binding.habitCompletedIcon.visibility = View.GONE
+            }
 
             binding.root.setOnClickListener {
                 clickListener.onHabitClicked(habit)
             }
         }
+
+
 
     }
 

@@ -47,6 +47,19 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val sharedPref = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
+        val isOnboardingCompleted = sharedPref.getBoolean("onboardingCompleted", false)
+
+        // 🔐 Check if user is already logged in
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (isOnboardingCompleted && currentUser != null) {
+            // 🚀 Skip onboarding and go straight to MainActivity
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
         setContentView(R.layout.activity_onboarding)
 
         val rootLayout = findViewById<View>(R.id.rootLayout)
@@ -150,6 +163,8 @@ class OnboardingActivity : AppCompatActivity() {
 
             auth.signInWithCredential(credential).addOnCompleteListener {
                 if (it.isSuccessful) {
+                    val sharedPreferences = getSharedPreferences("onboarding", MODE_PRIVATE)
+                    sharedPreferences.edit().putBoolean("onboardingCompleted", true).apply()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
@@ -163,9 +178,13 @@ class OnboardingActivity : AppCompatActivity() {
         }
     }
     private fun launchGoogleSignIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        signInLauncher.launch(signInIntent)
+        // Sign out first to force account chooser
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            signInLauncher.launch(signInIntent)
+        }
     }
+
     private fun isInternetAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false

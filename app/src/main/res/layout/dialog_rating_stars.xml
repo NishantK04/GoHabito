@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="30dp"
     android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <!-- MaterialTextView for better typography -->
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/ratingTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +19,7 @@
         android:textColor="@android:color/black"
         android:gravity="center" />
 
+    <!-- Native RatingBar (Material doesn't have its own yet) -->
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
@@ -27,20 +30,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:progressTint="@color/yellow"
-        android:scaleX="1"
-        android:scaleY="1" />
+        android:scaleX="1.1"
+        android:scaleY="1.1" />
 
-    <!-- "Later" Button to skip the rating -->
-    <TextView
+    <!-- MaterialTextView styled as a tappable action -->
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/laterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Later"
         android:textSize="14sp"
-        android:textColor="#3F51B5"
-        android:paddingTop="16dp"
         android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:paddingTop="16dp"
         android:clickable="true"
         android:focusable="true" />
-
 </LinearLayout>

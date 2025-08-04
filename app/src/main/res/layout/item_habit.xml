@@ -24,7 +24,7 @@
         android:gravity="center_vertical"
         android:background="@drawable/bg_habit_card">
 
-        <!-- Circular Progress -->
+        <!-- Existing: Progress Circle -->
         <FrameLayout
             android:layout_width="56dp"
             android:layout_height="56dp">
@@ -51,7 +51,7 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
-        <!-- Habit Info -->
+        <!-- Existing: Habit Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,14 +59,35 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/habitTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Habit Title"
-                android:textColor="#222222"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/habitTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Habit Title"
+                    android:textColor="#222222"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/journeyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tap to see your journey"
+                    android:textColor="#666666"
+                    android:textSize="11sp"
+                    android:layout_marginStart="18dp"
+                    android:background="@drawable/edittext_background"
+                    android:padding="4dp"
+                    android:clickable="false"
+                    android:focusable="true"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/habitData"
@@ -77,7 +98,6 @@
                 android:textSize="13sp"
                 android:layout_marginTop="2dp" />
 
-            <!-- ✅ NEW: Habit Start Date -->
             <TextView
                 android:id="@+id/habitStartDate"
                 android:layout_width="wrap_content"
@@ -87,5 +107,16 @@
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
         </LinearLayout>
+
+        <!-- ✅ New: Completion Icon -->
+        <ImageView
+            android:id="@+id/habitCompletedIcon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/check"
+            android:visibility="gone"/>
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

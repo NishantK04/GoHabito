@@ -5,5 +5,5 @@ data class MissionHabit(
     val habitTitle: String = "",
     var checked: Boolean = false,
     val userId: String = "",
-    var progressUpdated: Boolean = false
+    var progressUpdated: Boolean = false,
 )
