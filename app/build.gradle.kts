@@ -23,8 +23,8 @@ android {
         applicationId = "com.nishant.gohabito"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // ✅ Inject secure values into AndroidManifest.xml
@@ -70,6 +70,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+
     implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")

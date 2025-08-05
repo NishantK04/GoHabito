@@ -8,6 +8,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -27,6 +28,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
     private val PREF_WIDGET_PROMPT_SHOWN = "widget_prompt_shown"
 
 
+    private val REQUEST_CODE_UPDATE = 123
     private lateinit var addHabitBtn: ImageButton
     private lateinit var resetMissionBtn: ImageButton
     private lateinit var logoutBtn: ImageButton
@@ -202,6 +207,9 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
                     }
                 }
             }
+
+
+        checkForUpdates()
 
 
     }
@@ -615,7 +623,7 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
                 missionHabits.clear()
                 missionAdapter.notifyDataSetChanged()
                 updateMissionProgress()
-                saveMissionsToPrefs() // ✅ Add this
+                saveMissionsToPrefs()
             }
         Toast.makeText(this, "All data has been reset", Toast.LENGTH_SHORT).show()
     }
@@ -812,5 +820,36 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
         return capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun checkForUpdates() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { info ->
+            if (info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        AppUpdateType.IMMEDIATE,
+                        this,
+                        REQUEST_CODE_UPDATE
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                // User cancelled or update failed
+            }
+        }
     }
 }
