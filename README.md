@@ -1,12 +1,12 @@
-# 📱 GoHabito - Habit Tracker App
+#  GoHabito - Habit Tracker App
 
 **GoHabito** is a clean, minimal, and powerful habit tracking Android app built using **Kotlin**, **XML**, and **Firebase**. It helps users build daily routines and track habits with an intuitive interface. The app also supports **home screen widgets** for quick access and tracking.
 
 ---
 
-## 🧠 Key Features
+##  Key Features
 
-- ✅ **Track Daily Habits**  
+-  **Track Daily Habits**  
   Add habits, check them off daily, and stay consistent.
 
 -  **Progress Visualization**  
@@ -45,7 +45,7 @@
 
 ---
 
-## 🧪 Screenshots
+##  Screenshots
 
 <p align="center">
   <img src="https://github.com/NishantK04/GoHabito/blob/master/Home-portrait.png?raw=true" width="250" alt="Home Screen" />
