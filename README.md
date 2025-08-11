@@ -60,20 +60,7 @@ https://play.google.com/store/apps/details?id=com.nishant.gohabito
   <img src="https://github.com/NishantK04/GoHabito/blob/master/Widget-portrait.png?raw=true" width="250" alt="Widget" />
 </p>
 
----
 
-## 🚀 Getting Started (for Developers)
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/yourusername/gohabito.git
-   # Firebase Setup:
-   1. Go to https://console.firebase.google.com/
-   2. Create a project and register your Android app
-   3. Download google-services.json
-   4. Place it inside the app/ folder:
-   📁 Project Structure:
-       └── app/
-            └── google-services.json
 
 
