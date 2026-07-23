@@ -34,6 +34,12 @@ class MissionRemoteViewsFactory(private val context: Context) : RemoteViewsServi
     override fun getCount(): Int = missions.size
 
     override fun getViewAt(position: Int): RemoteViews {
+        if (position < 0 || position >= missions.size) {
+            return RemoteViews(context.packageName, R.layout.item_mission_widget).apply {
+                setTextViewText(R.id.itemText, "")
+                setViewVisibility(R.id.completedIcon, View.GONE)
+            }
+        }
         val habit = missions[position]
         val views = RemoteViews(context.packageName, R.layout.item_mission_widget)
 

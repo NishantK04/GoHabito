@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity(), HabitDeleteListener, HabitClickListene
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+
 
         // Make layout go under the status bar
         WindowCompat.setDecorFitsSystemWindows(window, false)

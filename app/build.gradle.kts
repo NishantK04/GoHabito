@@ -17,14 +17,14 @@ val defaultWebClientId: String = localProperties.getProperty("DEFAULT_WEB_CLIENT
 
 android {
     namespace = "com.nishant.gohabito"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.nishant.gohabito"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 4
-        versionName = "1.0.3"
+        targetSdk = 36
+        versionCode = 6
+        versionName = "1.0.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // ✅ Inject secure values into AndroidManifest.xml
